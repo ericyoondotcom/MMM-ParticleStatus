@@ -1,2 +1,2 @@
 # MMM-ParticleStatus
-MagicMirror module that shows you the status of your particle.io devices.
+[MagicMirror](https://github.com/MichMich/MagicMirror) module that shows you the status of your [Particle](https://particle.io) devices.
