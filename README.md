@@ -1,9 +1,10 @@
 # MMM-ParticleStatus
 [MagicMirror](https://github.com/MichMich/MagicMirror) module that shows you the status of your [Particle](https://particle.io) devices.
+
 _**Note:** This project is not affiliated or endorsed by Particle Industries, Inc._
 
-##Installation and Setup
-###Set up Particle Side
+## Installation and Setup
+### Set up Particle Side
 This module listens for events. For each indicator you want to have on your Magic Mirror, make up a unique name for the event, such as "LightStateChange", "Garage", or "Car". Do not create separate events for the states (such as "LightOn" and "LightOff"); just an umbrella event.
 
 Each time you want to update the state of the indicator on the Magic Mirror, publish to that event by using `Particle.publish("Event Name", "New State")` in the Particle firmware, such as the example shown below:
@@ -23,12 +24,12 @@ Flash the new code to your device(s).
 
 You can read the official Particle docs on `Particle.publish` [here](https://docs.particle.io/reference/firmware/photon/#particle-publish-).
 
-###Install the Module
+### Install the Module
 Run the following commands in your shell (or if using Windows, the equivalent):
 1. `cd ~/MagicMirror/modules` (replace the path with wherever your MagicMirror modules folder is)
 2. `git clone https://github.com/yummypasta/MMM-ParticleStatus.git`
 
-###Change Config
+### Change Config
 Add the following code to your config file. Edit the `config` value as specified in the next section.
 ```
 {
@@ -41,16 +42,18 @@ Add the following code to your config file. Edit the `config` value as specified
 }
 ```
 
-##Config Options
+## Config Options
 The `config` value in your config file needs to be changed.
+
 Key | Value(s) | Default Value
 --- | --- | --- 
 particleUsername | Your Particle account username. | _required_
 particlePassword | Your particle account password. | _required_
 events | An array of events (format is described below). | Empty array, resulting in nothing being shown
 
-###Event Objects
+### Event Objects
 The `events` field in the config takes a special JS Object, as described below.
+
 Key | Value(s) | Default Value
 --- | --- | --- 
 deviceId | The id of the device that publishes the event. | _required_
