@@ -27,7 +27,6 @@ You can read the official Particle docs on `Particle.publish` [here](https://doc
 Run the following commands in your shell (or if using Windows, the equivalent):
 1. `cd ~/MagicMirror/modules` (replace the path with wherever your MagicMirror modules folder is)
 2. `git clone https://github.com/yummypasta/MMM-ParticleStatus.git`
-3. `npm install`
 
 ###Change Config
 Add the following code to your config file. Edit the `config` value as specified in the next section.

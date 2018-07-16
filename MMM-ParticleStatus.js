@@ -7,12 +7,12 @@ Module.register("MMM-ParticleStatus",{
     
     getStyles: function() {
         return [
-            "node_modules/@fortawesome/fontawesome-free/css/all.css"
+            "https://use.fontawesome.com/releases/v5.1.0/css/all.css"
         ];
     },
     getScripts: function() {
         return [
-            "node_modules/particle-api-js/dist/particle.min.js"
+            "https://cdn.jsdelivr.net/particle-api-js/5/particle.min.js"
         ];
     },
     state: [],
