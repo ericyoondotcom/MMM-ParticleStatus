@@ -19,7 +19,7 @@ Module.register("MMM-ParticleStatus",{
     blinkState: false,
 	getDom: function() {
         var elem = document.createElement("div");
-        if(state.length != events.length){
+        if(this.state.length != events.length){
             elem.innerHTML = "Loading..."
             return elem;
         }
@@ -27,7 +27,7 @@ Module.register("MMM-ParticleStatus",{
             var icon = document.createElement("i");
             icon.classList.add("fas");
             icon.classList.add("fa-" + this.config.events[i].icon);
-            if(state == "off" || (state == "blink" && blinkState == false)){
+            if(this.state == "off" || (this.state == "blink" && this.blinkState == false)){
                 icon.setAttribute("visibility", "hidden");
             }
         }
@@ -41,18 +41,18 @@ Module.register("MMM-ParticleStatus",{
             var token = data.body.access_token;
             setInterval(function(){
                 if(Array.includes("blink")){
-                    blinkState = !blinkState;
+                    this.blinkState = !this.blinkState;
                     this.updateDom();
                 }
             }, 1000);
             for(var i = 0; i < this.config.events.length; i++){
                 var event = this.config.events[i];
-                state.push("off");
+                this.state.push("off");
                 particle.getEventStream({ deviceId: event.deviceId, auth: token }).then(function(stream) {
                   stream.on(event.name, function(data) {
                     var newState = event.states[data.name];
                     if(newState != undefined || (newState != "off" && newState != "on" && newState != "blink"))
-                        state[i] = newState;
+                        this.state[i] = newState;
                   });
                 });
             }
