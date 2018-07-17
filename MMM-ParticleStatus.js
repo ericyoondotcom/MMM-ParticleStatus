@@ -36,6 +36,7 @@ Module.register("MMM-ParticleStatus",{
     
     start: function() {
         var particle = new Particle();
+        var config = this.config; //needed because inside the particle.login.then, this.config gives config for whole MM!
         particle.login({username: this.config.particleUsername, password: this.config.particlePassword}).then(
           function(data) {
             var token = data.body.access_token;
@@ -45,8 +46,8 @@ Module.register("MMM-ParticleStatus",{
                     this.updateDom();
                 }
             }, 1000);
-            for(var i = 0; i < this.config.events.length; i++){
-                var event = this.config.events[i];
+            for(var i = 0; i < config.events.length; i++){
+                var event = config.events[i];
                 this.state.push("off");
                 particle.getEventStream({ deviceId: event.deviceId, auth: token }).then(function(stream) {
                   stream.on(event.name, function(data) {
