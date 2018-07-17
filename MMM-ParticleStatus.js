@@ -54,9 +54,11 @@ Module.register("MMM-ParticleStatus",{
                     var newState = event.states[data.name];
                     if(newState != undefined || (newState != "off" && newState != "on" && newState != "blink"))
                     thisModule.state[i] = newState;
+                    thisModule.updateDom();
                   });
                 });
             }
+            thisModule.updateDom();
           },
           function (err) {
             Log.log('Could not log in.', err);
