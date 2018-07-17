@@ -19,7 +19,7 @@ Module.register("MMM-ParticleStatus",{
     blinkState: false,
 	getDom: function() {
         var elem = document.createElement("div");
-        if(this.state.length != events.length){
+        if(this.state.length != this.config.events.length){
             elem.innerHTML = "Loading..."
             return elem;
         }
