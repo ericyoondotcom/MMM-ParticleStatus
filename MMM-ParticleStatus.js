@@ -47,7 +47,7 @@ Module.register("MMM-ParticleStatus",{
                 }
             }, 1000);
             for(var i = 0; i < thisModule.config.events.length; i++){
-                var event = thisModuleconfig.events[i];
+                var event = thisModule.config.events[i];
                 thisModule.state.push("off");
                 particle.getEventStream({ deviceId: event.deviceId, auth: token }).then(function(stream) {
                   stream.on(event.name, function(data) {
