@@ -36,23 +36,24 @@ Module.register("MMM-ParticleStatus",{
     
     start: function() {
         var particle = new Particle();
-        particle.login({username: this.config.particleUsername, password: this.config.particlePassword}).then(
+        var thisModule = this;
+        particle.login({username: thisModule.config.particleUsername, password: thisModule.config.particlePassword}).then(
           function(data) {
             var token = data.body.access_token;
             setInterval(function(){
                 if(Array.includes("blink")){
-                    this.blinkState = !this.blinkState;
-                    this.updateDom();
+                    thisModule.blinkState = !thisModule.blinkState;
+                    thisModule.updateDom();
                 }
             }, 1000);
-            for(var i = 0; i < this.config.events.length; i++){
-                var event = this.config.events[i];
-                this.state.push("off");
-                particle.getEventStream({ deviceId: event.deviceId, auth: token }).then((stream) => {
-                  stream.on(event.name, (data) => {
+            for(var i = 0; i < thisModule.config.events.length; i++){
+                var event = thisModuleconfig.events[i];
+                thisModule.state.push("off");
+                particle.getEventStream({ deviceId: event.deviceId, auth: token }).then(function(stream) {
+                  stream.on(event.name, function(data) {
                     var newState = event.states[data.name];
                     if(newState != undefined || (newState != "off" && newState != "on" && newState != "blink"))
-                        this.state[i] = newState;
+                    thisModule.state[i] = newState;
                   });
                 });
             }
