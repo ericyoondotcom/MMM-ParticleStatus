@@ -48,11 +48,15 @@ Module.register("MMM-ParticleStatus",{
             }, 1000);
             for(var i = 0; i < thisModule.config.events.length; i++){
                 var event = thisModule.config.events[i];
+                console.log(event)
                 thisModule.state.push("off");
                 particle.getEventStream({ deviceId: event.deviceId, auth: token }).then(function(stream) {
                   stream.on(event.name, function(data) {
+                    console.log("event stream data to show")
+                    console.log(data)
+                    console.log(event.name)
                     var newState = event.states[data.name];
-                    if(newState != undefined || (newState != "off" && newState != "on" && newState != "blink"))
+                    if(newState != undefined || (newState != "bad" && newState != "nuetral" && newState != "good"))
                     thisModule.state[i] = newState;
                     thisModule.updateDom();
                   });
@@ -62,6 +66,7 @@ Module.register("MMM-ParticleStatus",{
           },
           function (err) {
             Log.log('Could not log in.', err);
+            console.log("Error logging in")
           }
         );
           
