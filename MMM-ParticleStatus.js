@@ -27,9 +27,9 @@ Module.register("MMM-ParticleStatus",{
             var icon = document.createElement("i");
             icon.classList.add("fas");
             icon.classList.add("fa-" + this.config.events[i].icon);
-            if(this.state == "off" || (this.state == "blink" && this.blinkState == false)){
-                icon.setAttribute("visibility", "hidden");
-            }
+            // if(this.state == "off" || (this.state == "blink" && this.blinkState == false)){
+            //     icon.setAttribute("visibility", "hidden");
+            // }
         }
 		return elem;
     },
@@ -40,24 +40,25 @@ Module.register("MMM-ParticleStatus",{
         particle.login({username: thisModule.config.particleUsername, password: thisModule.config.particlePassword}).then(
           function(data) {
             var token = data.body.access_token;
-            setInterval(function(){
-                if(Array.includes("blink")){
-                    thisModule.blinkState = !thisModule.blinkState;
-                    thisModule.updateDom();
-                }
-            }, 1000);
+            // setInterval(function(){
+            //     if(Array.includes("blink")){
+            //         thisModule.blinkState = !thisModule.blinkState;
+            //         thisModule.updateDom();
+            //     }
+            // }, 1000);
             for(var i = 0; i < thisModule.config.events.length; i++){
                 var event = thisModule.config.events[i];
                 console.log(event)
-                thisModule.state.push("off");
+                // thisModule.state.push("off");
                 particle.getEventStream({ deviceId: event.deviceId, auth: token }).then(function(stream) {
                   stream.on(event.name, function(data) {
                     console.log("event stream data to show")
                     console.log(data)
                     console.log(event.name)
-                    var newState = event.states[data.name];
-                    if(newState != undefined || (newState != "bad" && newState != "nuetral" && newState != "good"))
-                    thisModule.state[i] = newState;
+                    // var newState = event.states[data.name];
+                    // if(newState != undefined || (newState != "bad" && newState != "nuetral" && newState != "good"))
+                    // thisModule.state[i] = newState;
+                    thisModule.state[i] = data;
                     thisModule.updateDom();
                   });
                 });
