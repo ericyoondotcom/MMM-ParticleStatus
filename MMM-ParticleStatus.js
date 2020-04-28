@@ -1,7 +1,7 @@
 Module.register("MMM-ParticleStatus",{
 	defaults: {
-        particleUsername: "me@example.com",
-        particlePassword: "super_secret_password",
+        particleUsername: "default",
+        particlePassword: "default",
         events: []
     },
     
@@ -12,53 +12,45 @@ Module.register("MMM-ParticleStatus",{
     },
     getScripts: function() {
         return [
-            "https://cdn.jsdelivr.net/particle-api-js/5/particle.min.js"
-        ];
+         " https://cdn.jsdelivr.net/npm/particle-api-js@8/dist/particle.min.js"
+	];
     },
     state: [],
-    blinkState: false,
 	getDom: function() {
         var elem = document.createElement("div");
-        if(this.state.length != this.config.events.length){
-            elem.innerHTML = "Loading..."
-            return elem;
-        }
-        for(var i = 0; i < this.state.length; i++){
+        for(var i = 0; i < this.state.length; ++i){
             var icon = document.createElement("i");
-            icon.classList.add("fas");
+	    //console.log("for loop i variable in state array", i)
+	    //console.log(this.state)
+	    console.log("configlength", this.config.events.length);
+	    console.log("i at the time", i);
+	    icon.classList.add("fas");
             icon.classList.add("fa-" + this.config.events[i].icon);
-            // if(this.state == "off" || (this.state == "blink" && this.blinkState == false)){
-            //     icon.setAttribute("visibility", "hidden");
-            // }
-        }
-		return elem;
+	    icon.innerHTML = " " + this.config.events[i].nickname +": "+ this.state[i] + " ";
+	    if(this.state[i]){
+	    	//console.log("All things icon", i);
+		elem.appendChild(icon);
+	    }
+	}
+	return elem;
     },
     
     start: function() {
-        var particle = new Particle();
         var thisModule = this;
+	var particle = new Particle({clientId: thisModule.config.clientId, clientSecret: thisModule.config.clientSecret});
         particle.login({username: thisModule.config.particleUsername, password: thisModule.config.particlePassword}).then(
           function(data) {
             var token = data.body.access_token;
-            // setInterval(function(){
-            //     if(Array.includes("blink")){
-            //         thisModule.blinkState = !thisModule.blinkState;
-            //         thisModule.updateDom();
-            //     }
-            // }, 1000);
-            for(var i = 0; i < thisModule.config.events.length; i++){
-                var event = thisModule.config.events[i];
-                console.log(event)
-                // thisModule.state.push("off");
-                particle.getEventStream({ deviceId: event.deviceId, auth: token }).then(function(stream) {
-                  stream.on(event.name, function(data) {
-                    console.log("event stream data to show")
-                    console.log(data)
-                    console.log(event.name)
-                    // var newState = event.states[data.name];
-                    // if(newState != undefined || (newState != "bad" && newState != "nuetral" && newState != "good"))
-                    // thisModule.state[i] = newState;
-                    thisModule.state[i] = data;
+            for(var j = 0; j < thisModule.config.events.length; ++j){
+		var event = thisModule.config.events[j];
+		console.log("for loop j variable in particle array", j)
+                particle.getEventStream({ deviceId: event.deviceId, name: event.name, auth: token }).then(function(stream) {
+                  stream.on('event', function(data) {
+		    console.log("Why is it not putting the data in the first spot")
+		    //console.log(j)
+		    //console.log(data)
+		    thisModule.state[thisModule.config.events.length-j] =  data.data;
+		    //console.log(thisModule.state)
                     thisModule.updateDom();
                   });
                 });
@@ -67,7 +59,6 @@ Module.register("MMM-ParticleStatus",{
           },
           function (err) {
             Log.log('Could not log in.', err);
-            console.log("Error logging in")
           }
         );
           
