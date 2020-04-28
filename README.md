@@ -49,6 +49,8 @@ Key | Value(s) | Default Value
 --- | --- | --- 
 particleUsername | Your Particle account username. | _required_
 particlePassword | Your particle account password. | _required_
+clientId | Device network client Id. | _required_
+clientSecret | Device network client secret. | _required_
 events | An array of events (format is described below). | Empty array, resulting in nothing being shown
 
 ### Event Objects
@@ -58,5 +60,6 @@ Key | Value(s) | Default Value
 --- | --- | --- 
 deviceId | The id of the device that publishes the event. | _required_
 name | The name of the event to listen for (the **first** parameter of the `Particle.publish` function) | _required_
+nickname | Any name that you would like to refer to the device | _required_
 icon | A [Font Awesome](https://fontawesome.io) icon to represent the event. _Only icons in the "solid" category are available. Brands are not available._ | _required_
 states | A JS Object, mapping possible states of the event to how the icon should be displayed (`off`, `on`, or `blink`). Example: `{ "Opening": "blink", "Closing": "blink", "Open": "on", "Closed": "off" }`. If the state is not defined in this object, the state of the icon will not change. | _required_
