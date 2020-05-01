@@ -1,30 +1,30 @@
 
-.particle {
-  display: inline-block;
-  text-align: left;
-  list-style: none;
-  width: 100%;
-  margin: 0 auto;
-  overflow: hidden;
-  white-space: nowrap;
-  box-sizing: border-box;
-}
-
 .particle--list {
-  padding: 0;
-  margin: 0;
+  padding-top: 10px;
+  overflow: hidden;
+  width: 100%;
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
   
 .particle--item {
-  display: block;
+  display: flex;
+  width: 90px;
+  flex-wrap: wrap;
+  justify-content: space-between;
   text-align: left;
 }
 
 .particle--icon {
-  line-height: 29px;
-  margin-right: 10px;
+  line-height: 18px;
+  text-align:center;
+  width: 100%;
+  font-size: 38px;
+  justify-content:center;
 }
 
 .particle--nickname {
-  display: inline;
+  display: flex;
+  font-size: 14px;
 }
