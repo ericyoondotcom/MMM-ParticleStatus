@@ -1,0 +1,30 @@
+
+.particle {
+  display: inline-block;
+  text-align: left;
+  list-style: none;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.particle--list {
+  padding: 0;
+  margin: 0;
+}
+  
+.particle--item {
+  display: block;
+  text-align: left;
+}
+
+.particle--icon {
+  line-height: 29px;
+  margin-right: 10px;
+}
+
+.particle--nickname {
+  display: inline;
+}
