@@ -38,16 +38,27 @@ Module.register("MMM-ParticleStatus",{
           icon.classList.add("fas");
           icon.classList.add("fa-" + this.config.events[k].icon);
           if(this.config.events[k].states) {
+            
             var low = this.config.events[k].states[0];
             var high = this.config.events[k].states[1];
-            if(data < low) {
-              icon.classList.add("red");
+            if(low.isNaN()) {
+              if(data == low){
+                icon.classList.add("red");
+              }
+              else if (data == high){
+                icon.classList.add("green");
+              }
             }
-            else if(data > low && data < high) {
-              icon.classList.add("green");
-            }
-            else if (data > high) {
-              icon.classList.add("red");
+            else {
+              if(data < low) {
+                  icon.classList.add("red");
+                }
+                else if(data > low && data < high) {
+                  icon.classList.add("green");
+                }
+                else if (data > high) {
+                  icon.classList.add("red");
+                }
             }
           }
 
