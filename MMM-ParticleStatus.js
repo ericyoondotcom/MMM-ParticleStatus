@@ -19,26 +19,57 @@ Module.register("MMM-ParticleStatus",{
 	      ];
     },
     state: [],
-
+    deviceHashMap: {},
     getDom: function() {
       
       var elem = document.createElement("div");
       elem.classList.add("particle--list");
-      for(var i = 0; i < this.state.length; ++i) {
-        var particleItem = document.createElement("div");
-        particleItem.classList.add("particle--item");
-        var icon = document.createElement("i");
-        icon.classList.add("particle--icon");
-        icon.classList.add("fas");
-        icon.classList.add("fa-" + this.config.events[i].icon);
-        console.log("nickname:",this.config.events[i].nickname);
-        console.log("state item: ",this.state[i]);
-        icon.innerHTML = "<p class='particle--nickname'> " + this.config.events[i].nickname +": "+ this.state[i] + " </p>";
-        if(this.state[i]) {
+
+      for(var k = 0; k < this.config.events.length; ++k) {
+        var deviceId = this.config.events[k].deviceId;
+        var name = this.config.events[k].name;
+
+        if(this.deviceHashMap[[deviceId, name]]) {
+          var data = this.deviceHashMap[[deviceId, name]];
+          var particleItem = document.createElement("div");
+          particleItem.classList.add("particle--item");
+          var icon = document.createElement("i");
+          icon.classList.add("particle--icon");
+          icon.classList.add("fas");
+          icon.classList.add("fa-" + this.config.events[k].icon);
+          if(this.config.events[k].states) {
+            var low = this.config.events[k].states[0];
+            var high = this.config.events[k].states[1];
+            if(data < low) {
+              icon.classList.add("red");
+            }
+            else if(data > low && data < high) {
+              icon.classList.add("green");
+            }
+            else if (data > high) {
+              icon.classList.add("red");
+            }
+          }
+
+          if(this.config.events[k].nickname) {
+            var particleNickname = document.createElement("p");
+            particleNickname.classList.add("particle--nickname");
+            particleNickname.innerHTML = this.config.events[k].nickname;
+            icon.appendChild(particleNickname);
+          }
+
+          if(this.config.events[k].show_data) {
+            var particleData = document.createElement("p");
+            particleData.classList.add("particle--data");
+            particleData.innerHTML = data;
+            icon.appendChild(particleData);
+          }
+          
           particleItem.appendChild(icon);
           elem.appendChild(particleItem);
         }
       }
+
       return elem;
     },
     
@@ -53,9 +84,7 @@ Module.register("MMM-ParticleStatus",{
 
             particle.getEventStream({ deviceId: event.deviceId, name: event.name, auth: token }).then(function(stream) {
               stream.on('event', function(data) {
-                console.log("data: ", data);
-                console.log("j: ", j);
-                thisModule.state.push(data.data);
+		            thisModule.deviceHashMap[[data.coreid, data.name]] = data.data;
                 thisModule.updateDom();
               });
             });
