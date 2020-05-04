@@ -86,7 +86,7 @@ Module.register("MMM-ParticleStatus",{
     
     start: function() {
       var thisModule = this;
-      var particle = new Particle({clientId: thisModule.config.clientId, clientSecret: thisModule.config.clientSecret});
+      var particle = new Particle();
       particle.login({username: thisModule.config.particleUsername, password: thisModule.config.particlePassword}).then(
         function(data) {
           var token = data.body.access_token;
