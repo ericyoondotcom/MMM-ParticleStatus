@@ -63,3 +63,39 @@ name | The name of the event to listen for (the **first** parameter of the `Part
 nickname | Any name that you would like to refer to the device | _required_
 icon | A [Font Awesome](https://fontawesome.io) icon to represent the event. _Only icons in the "solid" category are available. Brands are not available._ | _required_
 states | A JS Object, mapping possible states of the event to how the icon should be displayed (`off`, `on`, or `blink`). Example: `{ "Opening": "blink", "Closing": "blink", "Open": "on", "Closed": "off" }`. If the state is not defined in this object, the state of the icon will not change. | _required_
+
+
+### Examples
+
+```
+events:
+    {
+        deviceId: "a------------8",
+        name: "plantStatus_percentage",
+        icon: "leaf",
+        nickname: "paprika",
+        states: [16, 30]
+    },
+```
+
+```
+events:
+    {
+        deviceId: "a------------8",
+        name: "plantStatus_voltage",
+        icon: "battery-half",
+        nickname: "paprika",
+        show_data: true
+    }
+```
+
+```
+events:
+    {
+        deviceId: "b------------8",
+        name: "plantStatus_online",
+        icon: "leaf",
+        nickname: "rosemary",
+        states: ["off", "on"]
+    },
+```
