@@ -41,7 +41,7 @@ Module.register("MMM-ParticleStatus",{
             
             var low = this.config.events[k].states[0];
             var high = this.config.events[k].states[1];
-            if(low.isNaN()) {
+            if(isNaN(low)) {
               if(data == low){
                 icon.classList.add("red");
               }
@@ -86,7 +86,7 @@ Module.register("MMM-ParticleStatus",{
     
     start: function() {
       var thisModule = this;
-      var particle = new Particle();
+      var particle = new Particle({clientId: thisModule.config.clientId, clientSecret: thisModule.config.clientSecret});
       particle.login({username: thisModule.config.particleUsername, password: thisModule.config.particlePassword}).then(
         function(data) {
           var token = data.body.access_token;
