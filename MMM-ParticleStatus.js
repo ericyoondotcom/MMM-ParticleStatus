@@ -2,8 +2,6 @@ Module.register("MMM-ParticleStatus",{
 	defaults: {
         particleUsername: "default-username",
         particlePassword: "default-password",
-        clientId: "default-clientId",
-				clientSecret: "default-clientSecret",
         events: []
     },
     
