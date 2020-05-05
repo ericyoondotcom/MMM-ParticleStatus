@@ -154,5 +154,6 @@ If the data returned by the `device_sensor_online` event is within "off", then i
                     states: [2.9, 4.5],
                     show_data: true
                 },
+           ]
 }
 ``` 
