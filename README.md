@@ -158,3 +158,29 @@ If the data returned by the `device_sensor_online` event is within "off", then i
            ]
 }
 ``` 
+
+### Another Configuration Example With Debug On:
+```
+        {
+            module: "MMM-ParticleStatus",
+            position: "top_left",
+            disabled: false,
+            debug: true,
+            header: "My Devices",
+            config: {
+                particleUsername: "abcd@franada.com",
+                particlePassword: "notrealpassword",
+                events:
+                    [
+                        {
+                            deviceId: "3...8",
+                            name: "pool_temp_dashboard",
+                            icon: "swimmer",
+                            nickname: "pool",
+                            states: [20, 30],
+                            show_data: true
+                        }
+                    ]
+            }
+        },
+```
