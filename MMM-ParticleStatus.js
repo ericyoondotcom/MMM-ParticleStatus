@@ -2,7 +2,8 @@ Module.register("MMM-ParticleStatus",{
 	defaults: {
         particleUsername: "default-username",
         particlePassword: "default-password",
-        events: []
+        events: [],
+        debug: false
     },
     
     getStyles: function() {
@@ -29,6 +30,9 @@ Module.register("MMM-ParticleStatus",{
 
         if(this.deviceHashMap[[deviceId, name]]) {
           var data = this.deviceHashMap[[deviceId, name]];
+          if(this.config.debug){
+            Log.log('Data from Device Hash Map:', data);
+          }
           var particleItem = document.createElement("div");
           particleItem.classList.add("particle--item");
           var icon = document.createElement("i");
@@ -93,6 +97,9 @@ Module.register("MMM-ParticleStatus",{
 
             particle.getEventStream({ deviceId: event.deviceId, name: event.name, auth: token }).then(function(stream) {
               stream.on('event', function(data) {
+                if(thisModule.config.debug){
+                  Log.log('Data in the stream:',data);
+                }
 		            thisModule.deviceHashMap[[data.coreid, data.name]] = data.data;
                 thisModule.updateDom();
               });
