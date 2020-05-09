@@ -57,6 +57,7 @@ Key | Value(s) | Default Value
 particleUsername | Your Particle account username. | _required_
 particlePassword | Your particle account password. | _required_
 events | An array of events (format is described below). | Empty array, resulting in nothing being shown
+debug | `true` if you want logs enabled. | _not required_. default is `false`. If debug is `true`, then you will get console log output on the Particle webserver
 
 ### Event Objects
 The `events` field in the config takes a special JS Object, as described below.
