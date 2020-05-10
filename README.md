@@ -22,7 +22,7 @@ if(<Light switch just turned off>){
 another example:
 ```
 float voltage = analogRead(BATT) * 0.0011224;
-Particle.publish("device_battery_voltage", String(voltage));
+Particle.publish("device_battery_voltage", String(voltage), 60, PUBLIC);
 ```
 
 It is important to not publish state every  `loop()` tick, just when the state has changed.
@@ -55,9 +55,11 @@ The `config` value in your config file needs to be changed.
 Key | Value(s) | Default Value
 --- | --- | --- 
 particleUsername | Your Particle account username. | _required_
-particlePassword | Your particle account password. | _required_
+particlePassword | Your Particle account password. | _required_
+clientId | clientId from your Particle account. | _optional_ if you are sending PRIVATE Particle events, you will need your clientId/clientSecret
+clientSecret | clientSecret from your Particle account. | _optional_ if you are sending PRIVATE Particle events, you will need your clientId/clientSecret
 events | An array of events (format is described below). | Empty array, resulting in nothing being shown
-debug | `true` if you want logs enabled. | _not required_. default is `false`. If debug is `true`, then you will get console log output on the Particle webserver
+debug | `true` if you want logs enabled. | _optional. default is `false`. If debug is `true`, then you will get console log output on the Particle webserver
 
 ### Event Objects
 The `events` field in the config takes a special JS Object, as described below.
@@ -131,6 +133,9 @@ If the data returned by the `device_sensor_online` event is within "off", then i
     config: {
         particleUsername: "default@gmail.com",
         particlePassword: "defaultpassword",
+        clientId: "notrealclientId",
+        clientSecret: "notrealclientSecret",
+        debug: false,
         events:
             [
                 {
