@@ -1,69 +1,115 @@
 Module.register("MMM-ParticleStatus",{
 	defaults: {
-        particleUsername: "me@example.com",
-        particlePassword: "super_secret_password",
-        events: []
+        particleUsername: "default-username",
+        particlePassword: "default-password",
+        events: [],
+        debug: false
     },
     
     getStyles: function() {
         return [
-            "https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+          "https://use.fontawesome.com/releases/v5.1.0/css/all.css",
+          "MMM-ParticleStatus.css"
         ];
     },
     getScripts: function() {
         return [
-            "https://cdn.jsdelivr.net/particle-api-js/5/particle.min.js"
-        ];
+          "https://cdn.jsdelivr.net/npm/particle-api-js@8/dist/particle.min.js"
+	      ];
     },
     state: [],
-    blinkState: false,
-	getDom: function() {
-        var elem = document.createElement("div");
-        if(this.state.length != this.config.events.length){
-            elem.innerHTML = "Loading..."
-            return elem;
-        }
-        for(var i = 0; i < this.state.length; i++){
-            var icon = document.createElement("i");
-            icon.classList.add("fas");
-            icon.classList.add("fa-" + this.config.events[i].icon);
-            if(this.state == "off" || (this.state == "blink" && this.blinkState == false)){
-                icon.setAttribute("visibility", "hidden");
+    deviceHashMap: {},
+    getDom: function() {
+      
+      var elem = document.createElement("div");
+      elem.classList.add("particle--list");
+
+      for(var k = 0; k < this.config.events.length; ++k) {
+        var deviceId = this.config.events[k].deviceId;
+        var name = this.config.events[k].name;
+
+        if(this.deviceHashMap[[deviceId, name]]) {
+          var data = this.deviceHashMap[[deviceId, name]];
+          if(this.config.debug){
+            Log.log('Data from Device Hash Map:', data);
+          }
+          var particleItem = document.createElement("div");
+          particleItem.classList.add("particle--item");
+          var icon = document.createElement("i");
+          icon.classList.add("particle--icon");
+          icon.classList.add("fas");
+          icon.classList.add("fa-" + this.config.events[k].icon);
+          if(this.config.events[k].states) {
+            
+            var low = this.config.events[k].states[0];
+            var high = this.config.events[k].states[1];
+            if(isNaN(low)) {
+              if(data == low){
+                icon.classList.add("red");
+              }
+              else if (data == high){
+                icon.classList.add("green");
+              }
             }
+            else {
+              if(data < low) {
+                  icon.classList.add("red");
+                }
+                else if(data > low && data < high) {
+                  icon.classList.add("green");
+                }
+                else if (data > high) {
+                  icon.classList.add("red");
+                }
+            }
+          }
+
+          if(this.config.events[k].nickname) {
+            var particleNickname = document.createElement("p");
+            particleNickname.classList.add("particle--nickname");
+            particleNickname.innerHTML = this.config.events[k].nickname;
+            icon.appendChild(particleNickname);
+          }
+
+          if(this.config.events[k].show_data) {
+            var particleData = document.createElement("p");
+            particleData.classList.add("particle--data");
+            particleData.innerHTML = data;
+            icon.appendChild(particleData);
+          }
+          
+          particleItem.appendChild(icon);
+          elem.appendChild(particleItem);
         }
-		return elem;
+      }
+
+      return elem;
     },
     
     start: function() {
-        var particle = new Particle();
-        var thisModule = this;
-        particle.login({username: thisModule.config.particleUsername, password: thisModule.config.particlePassword}).then(
-          function(data) {
-            var token = data.body.access_token;
-            setInterval(function(){
-                if(Array.includes("blink")){
-                    thisModule.blinkState = !thisModule.blinkState;
-                    thisModule.updateDom();
+      var thisModule = this;
+      var particle = new Particle();
+      particle.login({username: thisModule.config.particleUsername, password: thisModule.config.particlePassword}).then(
+        function(data) {
+          var token = data.body.access_token;
+          for(var j = 0; j < thisModule.config.events.length; ++j) {
+            var event = thisModule.config.events[j];
+
+            particle.getEventStream({ deviceId: event.deviceId, name: event.name, auth: token }).then(function(stream) {
+              stream.on('event', function(data) {
+                if(thisModule.config.debug){
+                  Log.log('Data in the stream:',data);
                 }
-            }, 1000);
-            for(var i = 0; i < thisModule.config.events.length; i++){
-                var event = thisModule.config.events[i];
-                thisModule.state.push("off");
-                particle.getEventStream({ deviceId: event.deviceId, auth: token }).then(function(stream) {
-                  stream.on(event.name, function(data) {
-                    var newState = event.states[data.name];
-                    if(newState != undefined || (newState != "off" && newState != "on" && newState != "blink"))
-                    thisModule.state[i] = newState;
-                    thisModule.updateDom();
-                  });
-                });
-            }
-            thisModule.updateDom();
-          },
-          function (err) {
-            Log.log('Could not log in.', err);
+		            thisModule.deviceHashMap[[data.coreid, data.name]] = data.data;
+                thisModule.updateDom();
+              });
+            });
           }
-        );
-          
+          thisModule.updateDom();
+        },
+        function (err) {
+          Log.log('Could not log in.', err);
+        }
+      );       
     }
 });

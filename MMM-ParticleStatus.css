@@ -1,0 +1,43 @@
+
+.particle--list {
+  padding-top: 10px;
+  overflow: hidden;
+  width: 100%;
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+  
+.particle--item {
+  width: 88px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.particle--icon {
+  line-height: 18px;
+  text-align:center;
+  width: 100%;
+  font-size: 38px;
+  justify-content:center;
+}
+
+.particle--nickname {
+  font-size: 14px;
+  margin-bottom:20px;
+}
+
+.particle--data {
+  font-size: 14px;
+  margin-top: -20px;
+  margin-bottom:20px;
+}
+
+.green{
+  color: green;
+}
+
+.red{
+  color: red;
+}
