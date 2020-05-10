@@ -88,7 +88,22 @@ Module.register("MMM-ParticleStatus",{
     
     start: function() {
       var thisModule = this;
-      var particle = new Particle();
+      if(thisModule.config.clientId) {
+        if(thisModule.config.clientSecret){
+          var particle = new Particle( {clientId: thisModule.config.clientId, clientSecret: thisModule.config.clientSecret});
+        }
+        else{
+          if(thisModule.config.debug){
+            Log.log('clientID but no clientSecret');
+          }
+        }
+      }
+      else{
+        if(thisModule.config.debug){
+          Log.log('Not using clientId and clientSecret, assuming Particle events are published as PUBLIC events');
+        }
+        var particle = new Particle( {});
+      }
       particle.login({username: thisModule.config.particleUsername, password: thisModule.config.particlePassword}).then(
         function(data) {
           var token = data.body.access_token;
