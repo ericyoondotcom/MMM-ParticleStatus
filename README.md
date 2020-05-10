@@ -56,10 +56,10 @@ Key | Value(s) | Default Value
 --- | --- | --- 
 particleUsername | Your Particle account username. | _required_
 particlePassword | Your Particle account password. | _required_
-clientId | clientId from your Particle account. | _optional_ if you are sending PRIVATE Particle events, you will need your clientId/clientSecret
-clientSecret | clientSecret from your Particle account. | _optional_ if you are sending PRIVATE Particle events, you will need your clientId/clientSecret
+clientId | clientId from your Particle account. | _optional_  If you are sending PRIVATE Particle events, you will need your clientId/clientSecret
+clientSecret | clientSecret from your Particle account. | _optional_  :If you are sending PRIVATE Particle events, you will need your clientId/clientSecret.
 events | An array of events (format is described below). | Empty array, resulting in nothing being shown
-debug | `true` if you want logs enabled. | _optional. default is `false`. If debug is `true`, then you will get console log output on the Particle webserver
+debug | `true` if you want logs enabled. | _optional- -:Default is `false`. If debug is `true`, then you will get console log output on the Particle webserver
 
 ### Event Objects
 The `events` field in the config takes a special JS Object, as described below.
