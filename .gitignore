@@ -1,3 +1,7 @@
 node_modules/
+<<<<<<< HEAD
 config*
 deploy*
+=======
+config*
+>>>>>>> 6185ab69676cfdcca3e476335625d529d3d38248
