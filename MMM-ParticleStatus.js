@@ -59,7 +59,7 @@ Module.register("MMM-ParticleStatus",{
                   icon.classList.add("green");
                 }
                 else if (data > high) {
-                  icon.classList.add("red");
+                  icon.classList.add("blue");
                 }
             }
           }
